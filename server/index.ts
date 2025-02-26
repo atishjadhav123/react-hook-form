@@ -11,9 +11,14 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 
-app.use(cors(
-    { origin: "https://react-hook-form-g9q9-client.vercel.app", credentials: true }
-))
+app.use(
+    cors({
+        origin: "https://react-hook-form-g9q9-client-fqd1mxpll-atishs-projects-c6ecae1c.vercel.app", // Your frontend URL
+        credentials: true,
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        allowedHeaders: ["Content-Type", "Authorization"],
+    })
+);
 app.use(express.static("dist"))
 app.use("/uploads", express.static("uploads"))
 
