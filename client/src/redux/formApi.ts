@@ -36,7 +36,7 @@ export interface ApiResponse {
 
 export const formApi = createApi({
     reducerPath: "formApi",
-    baseQuery: fetchBaseQuery({ baseUrl: "https://react-hook-form-lyart.vercel.app/api", credentials: "include" }),
+    baseQuery: fetchBaseQuery({ baseUrl: "https://react-hook-form-g9q9-client.vercel.app/api", credentials: "include" }),
     tagTypes: ["tagName"],
     endpoints: (builder) => ({
         getForm: builder.query<ApiResponse, void>({
