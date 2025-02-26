@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }))
 
 
 app.use(cors(
-    { origin: "http://localhost:5173", credentials: true }
+    { origin: "https://react-hook-form-lyart.vercel.app", credentials: true }
 ))
 app.use(express.static("dist"))
 app.use("/uploads", express.static("uploads"))
