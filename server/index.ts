@@ -1,17 +1,14 @@
-import express, { NextFunction, Request, Response } from "express"
-import userRoutes from "./routes/userRoutes"
-import mongoose from "mongoose"
-import cors from "cors"
-import dotenv from "dotenv"
-import { redisClient } from "./utils/redisClient"
-dotenv.config()
-const app = express()
-app.use(cors())
-app.options("*", cors()) // Allow preflight requests globally
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+import express, { Request, Response, NextFunction } from "express";
+import cors from "cors";
+import dotenv from "dotenv";
 
+dotenv.config();
+const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// ✅ Correct CORS setup
 app.use(
     cors({
         origin: "https://react-hook-form-g9q9-client.vercel.app", // Your frontend URL
@@ -20,34 +17,26 @@ app.use(
         allowedHeaders: ["Content-Type", "Authorization"],
     })
 );
-app.use(express.static("dist"))
-app.use("/uploads", express.static("uploads"))
 
-app.use("/api/getdata", userRoutes)
-
+// ✅ Manually set headers (in case middleware isn't applied)
 app.use((req: Request, res: Response, next: NextFunction) => {
-    res.status(404).json({ message: "Route Not Found" })
-})
+    res.header("Access-Control-Allow-Origin", "https://react-hook-form-g9q9-client.vercel.app");
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    next();
+});
 
+// ✅ Handle OPTIONS requests (preflight)
+app.options("*", (req, res) => {
+    res.status(200).end();
+});
 
-mongoose.connect(process.env.MONGO_URL as string)
+// ✅ Test Route
+app.get("/api/getdata", (req, res) => {
+    res.json({ message: "CORS working!" });
+});
 
-const PORT = Number(process.env.PORT) || 5000;
-(async () => {
-    try {
-        await redisClient.set("testKey", "Hello Redis")
-        const value = await redisClient.get("testKey")
-        console.log("Retrieved from Redis:", value)
-    } catch (err) {
-        console.error("Redis Error:", err)
-    }
-})()
-mongoose.connection.once("open", () => {
-    console.log("MONGO CONNECTED")
-
-    app.listen(PORT, () => console.log(`Server Running on port ${PORT}`))
-
-})
-
-// console.log("Server running on http://localhost:5000")
-
+// ✅ Start Server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
