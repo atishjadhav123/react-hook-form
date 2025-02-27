@@ -23,7 +23,7 @@ app.use(
 app.use(express.static("dist"))
 app.use("/uploads", express.static("uploads"))
 
-app.use("/api", userRoutes)
+app.use("/api/getdata", userRoutes)
 
 app.use((req: Request, res: Response, next: NextFunction) => {
     res.status(404).json({ message: "Route Not Found" })
