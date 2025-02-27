@@ -23,7 +23,12 @@ const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
-app.use((0, cors_1.default)({ origin: true, credentials: true }));
+app.use((0, cors_1.default)({
+    origin: "https://react-hook-form-g9q9-client.vercel.app", // Your frontend URL
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+}));
 app.use(express_1.default.static("dist"));
 app.use("/uploads", express_1.default.static("uploads"));
 app.use("/api", userRoutes_1.default);
