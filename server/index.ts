@@ -7,6 +7,7 @@ import { redisClient } from "./utils/redisClient"
 dotenv.config()
 const app = express()
 app.use(cors())
+app.options("*", cors()) // Allow preflight requests globally
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
